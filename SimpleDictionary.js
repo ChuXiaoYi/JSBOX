@@ -35,7 +35,6 @@ $ui.render({
             tapped: function (sender) {
                 var i = $("search_input")
                 translate(i.text)
-                console.log($app.env)
                 $("search_input").blur()
             }
         }
@@ -53,12 +52,39 @@ $ui.render({
             make.edges.insets($insets(130, 10, 40, 10)) //上、左、下、右
         },
         events: {
-
+            longPressed: function(sender){  //长按获取翻译后的内容
+                $clipboard.text = $("result").text
+                $ui.alert({
+                    title: "滴滴",
+                    message: "成功复制：" + $clipboard.text,
+                });
+            }
+        }
+    },
+    {
+        type: "button",
+        props: {
+            title: "",
+            id: "speak_btn",
+            icon: $icon("012"),
+            bgcolor: $color("clear")
+        },
+        layout: function(make, view){
+            make.top.equalTo($("search_button").bottom).offset(10)
+            make.right.inset(20)
+        },
+        events: {
+            tapped: function(sender){
+                $text.speech({
+                    text: $("result").text,
+                    rate: 0.5,
+                    language: trans
+                });
+            }
         }
     }
     ]
 });
-
 
 /**
  * 控制是否获取剪贴板的内容
