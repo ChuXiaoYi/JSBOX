@@ -5,7 +5,7 @@ $ui.render({
         title: ""
     },
     views: [{
-        type: "input",
+        type: "input",      //文本输入
         props: {
             id: "search_input",
             type: $kbType.search,
@@ -20,7 +20,7 @@ $ui.render({
         }
     },
     {
-        type: "button",
+        type: "button",     //搜索按钮
         props: {
             title: "查询",
             id: "search_button",
@@ -40,7 +40,7 @@ $ui.render({
         }
     },
     {
-        type: "text",
+        type: "text",   //结果文本
         props: {
             id: "result",
             // bgcolor: $color("#4484f4"),
@@ -62,9 +62,8 @@ $ui.render({
         }
     },
     {
-        type: "button",
+        type: "button",     //播放语音
         props: {
-            title: "",
             id: "speak_btn",
             icon: $icon("012"),
             bgcolor: $color("clear")
@@ -82,9 +81,39 @@ $ui.render({
                 });
             }
         }
+    },
+    {
+        type: "button",     //语音输入
+        props: {
+            id: "siri_btn",
+            icon: $icon("044", $color("tint"), $size(80, 80)), 
+            bgcolor: $color("clear")
+        },
+        layout: function(make){
+            make.bottom.inset(50)
+            make.centerX.inset(0)
+            make.size.equalTo($size(100, 100))
+        },
+        events: {
+            tapped: function(sender){
+                $input.speech({
+                    handler: function(text) {
+                        $("search_input").text = text
+                        translate($("search_input").text)
+                    }
+                });
+            }
+        }
     }
     ]
 });
+
+
+function hidden_siribtn(){
+    if ($app.env == $env.today){
+        $("siri_btn").props['icon'] = $icon("005", $color("white"), $size(20, 20))
+    }
+}
 
 /**
  * 控制是否获取剪贴板的内容
@@ -160,3 +189,4 @@ function translate(search_text) {
 
 
 get_clipboard_text()
+hidden_siribtn()
